@@ -4,6 +4,7 @@ import com.groupProject.groupProject.model.Course;
 import com.groupProject.groupProject.model.Document;
 import com.groupProject.groupProject.model.Post;
 import com.groupProject.groupProject.repo.CourseRepository;
+import com.groupProject.groupProject.repo.CoursesAndUsersRepository;
 import com.groupProject.groupProject.repo.DocumentRepository;
 import com.groupProject.groupProject.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,22 @@ import java.util.Optional;
 public class PostsController {
     @Autowired
     private CourseRepository courseRepository;
+
     @Autowired
     private PostRepository postRepository;
+
     @Autowired
     private DocumentRepository docRep;
 
-    @GetMapping("/post/{courseId}/{postId}")
+    @Autowired
+    private CoursesAndUsersRepository coursesAndUsersRepository;
+
+    @GetMapping("/admin/{userId}/post/{courseId}/{postId}")
     public String PostDetails(@PathVariable(value = "postId") long postId,
+                              @PathVariable(value = "userId") long userId,
                               @PathVariable(value = "courseId") long courseId, Model model) {
         if (!postRepository.existsById(postId)) {
-            return "redirect:/coursePage/" + courseId;
+            return "redirect:/admin/" + userId + "/coursePage/" + courseId;
         }
         Optional<Post> post = postRepository.findById(postId);
         ArrayList<Post> res = new ArrayList<>();
@@ -43,16 +50,27 @@ public class PostsController {
         Post post1 = postRepository.findById(postId).get();
         Iterable<Document> docs = post1.getDocuments();
         model.addAttribute("docs", docs);
+
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        model.addAttribute("token", token);
+
         model.addAttribute("courseId", courseId);
         model.addAttribute("post", res);
-        model.addAttribute("postId",postId);
+        model.addAttribute("postId", postId);
+        model.addAttribute("userId", userId);
         return "post-details";
     }
-    @GetMapping("/course/{courseId}/post/{postId}/edit")
+
+    @GetMapping("/admin/{userId}/course/{courseId}/post/{postId}/edit")
     public String PostEdit(@PathVariable(value = "postId") long postId,
+                           @PathVariable(value = "userId") long userId,
                            @PathVariable(value = "courseId") long courseId, Model model) {
+
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        model.addAttribute("token", token);
+
         if (!postRepository.existsById(postId)) {
-            return "redirect:/coursePage/" + courseId;
+            return "redirect:/admin/" + userId + "/coursePage/" + courseId+"?token=" + token;
         }
         Optional<Post> post = postRepository.findById(postId);
         ArrayList<Post> res = new ArrayList<>();
@@ -62,23 +80,29 @@ public class PostsController {
         model.addAttribute("docs", docs);
         model.addAttribute("courseId", courseId);
         model.addAttribute("post", res);
-        model.addAttribute("postId",postId);
+        model.addAttribute("postId", postId);
+        model.addAttribute("userId", userId);
         return "post-edit";
     }
-    @PostMapping ("/course/{courseId}/post/{postId}/edit")
+
+    @PostMapping("/admin/{userId}/course/{courseId}/post/{postId}/edit")
     public String PostUpdate(@PathVariable(value = "postId") long postId,
-                           @PathVariable(value = "courseId") long courseId,
+                             @PathVariable(value = "courseId") long courseId,
+                             @PathVariable(value = "userId") long userId,
                              @RequestParam String title,
-                             @RequestParam String announce, @RequestParam String post,Model model) {
+                             @RequestParam String announce, @RequestParam String post, Model model) {
+
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+
         if (!postRepository.existsById(postId)) {
-            return "redirect:/coursePage/" + courseId;
+            return "redirect:/admin/" + userId + "/coursePage/" + courseId+"?token=" + token;
         }
         Post post1 = postRepository.findById(postId).get();
         post1.setTitle(title);
         post1.setAnnounce(announce);
         post1.setPost(post);
         postRepository.save(post1);
-        return "redirect:/post/" + courseId +"/"+ postId;
+        return "redirect:/admin/" + userId + "/post/" + courseId + "/" + postId+"?token=" + token;
     }
 
     public void uploadFile(MultipartFile multipartFile, Post post, Course course) throws IOException {
@@ -95,14 +119,16 @@ public class PostsController {
         docRep.save(document);
     }
 
-    @PostMapping("/course/{id}")
-    public String AddPost(@PathVariable(value = "id") long id, @RequestParam String title,
+    @PostMapping("/admin/{userId}/course/{courseId}")
+    public String AddPost(@PathVariable(value = "courseId") long courseId,
+                          @PathVariable(value = "userId") long userId,
+                          @RequestParam String title,
                           @RequestParam String announce, @RequestParam String post,
                           @RequestParam MultipartFile exampleInputFile,
                           @RequestParam MultipartFile exampleInputFile1,
                           @RequestParam MultipartFile exampleInputFile2,
                           Model model) throws IOException {
-        Course course = courseRepository.findById(id).get();
+        Course course = courseRepository.findById(courseId).get();
         Post p = new Post();
         p.setTitle(title);
         p.setAnnounce(announce);
@@ -111,59 +137,67 @@ public class PostsController {
         postRepository.save(p);
         course.addPost(p);
         if (!exampleInputFile.isEmpty()) {
-            uploadFile(exampleInputFile, p,course);
+            uploadFile(exampleInputFile, p, course);
         }
         if (!exampleInputFile1.isEmpty()) {
-            uploadFile(exampleInputFile1, p,course);
+            uploadFile(exampleInputFile1, p, course);
         }
         if (!exampleInputFile2.isEmpty()) {
-            uploadFile(exampleInputFile2, p,course);
+            uploadFile(exampleInputFile2, p, course);
         }
 
-        return "redirect:/coursePage/" + course.getId();
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        return "redirect:/admin/" + userId + "/coursePage/" + course.getId()+"?token=" + token;
     }
-    @PostMapping("/course/{courseId}/post/{postId}/upload/materials")
+
+    @PostMapping("/admin/{userId}/course/{courseId}/post/{postId}/upload/materials")
     public String uploadFile(@PathVariable(value = "postId") long postId,
                              @PathVariable(value = "courseId") long courseId,
-                             @RequestParam("document")MultipartFile multipartFile,
-                             RedirectAttributes ra) throws IOException
-    {
+                             @PathVariable(value = "userId") long userId,
+                             @RequestParam("document") MultipartFile multipartFile,
+                             RedirectAttributes ra) throws IOException {
 
-        Post post=postRepository.findById(postId).get();
+        Post post = postRepository.findById(postId).get();
         Course course = courseRepository.findById(courseId).get();
-        if(!multipartFile.isEmpty())
-        {
-            uploadFile(multipartFile,post,course);
+        if (!multipartFile.isEmpty()) {
+            uploadFile(multipartFile, post, course);
         }
-        return "redirect:/post/" + courseId +"/"+postId;
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        return "redirect:/admin/" + userId + "/post/" + courseId + "/" + postId+"?token=" + token;
     }
 
-    @PostMapping("/course/{courseId}/post/{postId}/remove/doc/{docId}")
+    @PostMapping("/admin/{userId}/course/{courseId}/post/{postId}/remove/doc/{docId}")
     public String CourseMaterialDelete(@PathVariable(value = "postId") long postId,
                                        @PathVariable(value = "docId") long docId,
-                                       @PathVariable(value = "courseId") long courseId, Model model) {
+                                       @PathVariable(value = "userId") long userId,
+                                       @PathVariable(value = "courseId") long courseId,
+                                       Model model) {
         Post post = postRepository.findById(postId).get();
         Course course = courseRepository.findById(courseId).get();
         Document doc = docRep.findById(docId).get();
         post.removeDocument(doc);
         course.removeDocument(doc);
         docRep.deleteById(docId);
-        return "redirect:/post/" + courseId +"/"+ postId;
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        return "redirect:/admin/" + userId + "/post/" + courseId + "/" + postId+"?token=" + token;
 
     }
-    @PostMapping("/course/{courseId}/post/{postId}/remove/post")
+
+    @PostMapping("/admin/{userId}/course/{courseId}/post/{postId}/remove/post")
     public String CoursePostDelete(@PathVariable(value = "postId") long postId,
-                                 @PathVariable(value = "courseId") long courseId
-                                ,Model model)
-    {
-        Post post=postRepository.findById(postId).orElseThrow();
-        Iterable<Document> docs=post.getDocuments();
-        for ( Document doc: docs) {
+                                   @PathVariable(value = "userId") long userId,
+                                   @PathVariable(value = "courseId") long courseId,
+                                   Model model) {
+        Post post = postRepository.findById(postId).orElseThrow();
+        Iterable<Document> docs = post.getDocuments();
+        for (Document doc : docs) {
             docRep.deleteById(doc.getId());
         }
-        Course course=courseRepository.findById(courseId).get();
+        Course course = courseRepository.findById(courseId).get();
         course.removePost(post);
         postRepository.delete(post);
-        return "redirect:/coursePage/"+courseId;
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+
+        return "redirect:/admin/" + userId + "/coursePage/" + courseId+"?token=" + token;
     }
 }

@@ -29,13 +29,13 @@
                 <div>
                     [[${doc.name}]]
                 </div>
-                <form th:action="'/course/'+${courseId}+'/remove/'+${doc.id} " method="post">
+                <form th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/remove/'+${doc.id} +'?token='+${token}" method="post">
                     <button class="btn btn-secondary"   type="submit">Delete</button>
                 </form>
             </div>
         </th:block>
     </div>
-    <form th:action="'/course/'+${courseId}+'/upload/materials'" method="post" enctype="multipart/form-data">
+    <form th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/upload/materials?token='+${token}" method="post" enctype="multipart/form-data">
         <div class="border rounded m-3 ">
             <h2>Upload Your Files:</h2>
             <p>

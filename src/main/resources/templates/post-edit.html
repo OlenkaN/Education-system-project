@@ -22,9 +22,9 @@
         th:insert="header :: header">
 </header>
 <br>
-<div class="card text-white bg-dark mb-3" id="center">
+<div class="container mt-5 mb-5" id="center">
     <h1>Edit post</h1>
-    <form th:each="el :${post}" th:action="'/course/'+${courseId}+'/post/'+${postId}+'/edit'" method="post" >
+    <form th:each="el :${post}" th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/post/'+${postId}+'/edit?token='+${token}" method="post" >
         <input type="text" th:value="${el.title}" name="title" placeholder="Enter title" class="form-control"><br>
         <input type="text"  th:value="${el.announce}" name="announce" placeholder="Enter announce" class="form-control"><br>
         <textarea name="post" placeholder="Enter post text" class="form-control" th:text="${el.post}"></textarea><br>
@@ -33,10 +33,10 @@
             <button class="btn btn-secondary" type="submit" >Edit</button>
         </p>
     </form>
-    <form th:action="'/course/'+${courseId}+'/post/'+${postId}+'/remove/post'" method="post">
+    <form th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/post/'+${postId}+'/remove/post?token='+${token}" method="post">
         <button class="btn btn-warning" type="submit">Delete</button>
     </form>
-
+'
 </div>
 
 <div   class="container-fluid text-center">
@@ -49,7 +49,7 @@
                 <div>
                     [[${doc.name}]]
                 </div>
-                <form th:action="'/course/'+${courseId}+'/post/'+${postId} +'/remove/doc/'+${doc.id}" method="post">
+                <form th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/post/'+${postId} +'/remove/doc/'+${doc.id}+'?token='+${token}" method="post">
                     <button class="btn btn-secondary"   type="submit">Delete</button>
                 </form>
             </div>

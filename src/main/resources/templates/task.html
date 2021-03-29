@@ -36,7 +36,7 @@
 
 <div class="container mt-5 mb-5">
     <h1> Create task</h1>
-    <form th:action="'/course/'+${courseId}+'/taskAdd'" method="post" enctype="multipart/form-data">
+    <form th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/taskAdd?token='+${token}" method="post" enctype="multipart/form-data">
         <input type="text" name="title" placeholder="Enter title" class="form-control"><br>
         <textarea name="task" placeholder="Enter task's text" class="form-control"></textarea><br>
         <div class="form-group">
@@ -64,12 +64,12 @@
     <h4 style="text-align: right" th:text="${el.time}"/>
     <h1 class="display-3" th:text="${el.title}"/>
     <hr class="my-4">
-    <form th:action="'/course/'+${courseId} +'/task/'+${el.id}+'/delete'" method="post">
+    <form th:action="'/admin/'+${userId}+'/course/'+${courseId} +'/task/'+${el.id}+'/delete?token='+${token}" method="post">
     <div class="row">
         <div class="col-lg-7">
         <p class="lead">
-            <a class="btn btn-secondary" th:href="'/course/'+${courseId} +'/task/'+${el.id}+'/responses'" role="button">Responses</a>
-            <a class="btn btn-secondary" th:href="'/course/'+${courseId} +'/task/'+${el.id}+'/edit'" role="button">Edit</a>
+            <a class="btn btn-secondary" th:href="'/admin/'+${userId}+'/course/'+${courseId} +'/task/'+${el.id}+'/responses?token='+${token}" role="button">Responses</a>
+            <a class="btn btn-secondary" th:href="'/admin/'+${userId}+'/course/'+${courseId} +'/task/'+${el.id}+'/edit?token='+${token}" role="button">Edit</a>
             <button class="btn btn-warning" type="submit">Delete</button>
 
         </p>

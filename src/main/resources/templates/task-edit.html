@@ -38,7 +38,7 @@
 
 <div class="container mt-5 mb-5">
     <h1> Edit task</h1>
-    <form  th:each="el:${tasks}" th:action="'/course/'+${courseId} +'/task/'+${el.id}+'/edit'"  method="post" >
+    <form  th:each="el:${tasks}" th:action="'/admin/'+${userId}+'/course/'+${courseId} +'/task/'+${el.id}+'/edit?token='+${token}"  method="post" >
         <input type="text" th:value="${el.title}" name="title" placeholder="Enter title" class="form-control"><br>
         <textarea name="task"  th:value="${el.task}"placeholder="Enter task's text" class="form-control"></textarea><br>
         <div class="form-group">
@@ -66,7 +66,7 @@
                 <div>
                     [[${doc.name}]]
                 </div>
-                <form th:action="'/course/'+${courseId}+'/task/'+${taskId} +'/delete/doc/'+${doc.id}" method="post">
+                <form th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/task/'+${taskId} +'/delete/doc/'+${doc.id}+'?token='+${token}" method="post">
                     <button class="btn btn-secondary"   type="submit">Delete</button>
                 </form>
             </div>
@@ -74,7 +74,7 @@
     </div>
 
 
-    <form th:action="'/course/'+${courseId}+'/task/'+${taskId} +'/upload/materials'" method="post" enctype="multipart/form-data">
+    <form th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/task/'+${taskId} +'/upload/materials?token='+${token}" method="post" enctype="multipart/form-data">
 
         <div class="border rounded m-3  ">
                 <h2>Upload Your Files:</h2>

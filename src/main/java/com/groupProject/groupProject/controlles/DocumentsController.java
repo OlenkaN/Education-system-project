@@ -5,6 +5,7 @@ import com.groupProject.groupProject.model.Course;
 import com.groupProject.groupProject.model.Document;
 import com.groupProject.groupProject.model.Post;
 import com.groupProject.groupProject.repo.CourseRepository;
+import com.groupProject.groupProject.repo.CoursesAndUsersRepository;
 import com.groupProject.groupProject.repo.DocumentRepository;
 import com.groupProject.groupProject.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +30,29 @@ public class DocumentsController {
     private CourseRepository courseRepository;
     @Autowired
     private PostRepository postRepository;
-    @GetMapping("/course/{id}/materials")
-    public String viewMaterialsPage(@PathVariable(value = "id")long id, Model model)
+    @Autowired
+    private CoursesAndUsersRepository coursesAndUsersRepository;
+
+    @GetMapping("/admin/{userId}/course/{courseId}/materials")
+    public String viewMaterialsPage(@PathVariable(value = "courseId")long courseId,
+                                    @PathVariable(value = "userId") long userId,
+                                    Model model)
     {
-        Course course = courseRepository.findById(id).get();
+        Course course = courseRepository.findById(courseId).get();
         Iterable <Document> docs= course.getDocuments();
         model.addAttribute("docs",docs);
-        model.addAttribute("courseId",id);
+        model.addAttribute("courseId",courseId);
+        model.addAttribute("userId", userId);
+
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        model.addAttribute("token", token);
+
         return "CourseTeacherMaterials";
     }
-    @PostMapping("/course/{id}/upload/materials")
-    public String uploadFile(@PathVariable(value = "id")long id, @RequestParam("document")MultipartFile multipartFile,
+    @PostMapping("/admin/{userId}/course/{courseId}/upload/materials")
+    public String uploadFile(@PathVariable(value = "courseId")long courseId,
+                             @RequestParam("document")MultipartFile multipartFile,
+                             @PathVariable(value = "userId") long userId,
                              RedirectAttributes ra) throws IOException
     {
         String fileName= StringUtils.cleanPath(multipartFile.getOriginalFilename());
@@ -48,22 +61,25 @@ public class DocumentsController {
         document.setContent(multipartFile.getBytes());
         document.setSize(multipartFile.getSize());
         document.setUpload_time(new Date());
-        Course course = courseRepository.findById(id).get();
+        Course course = courseRepository.findById(courseId).get();
         document.setCourse(course);
         course.addDocument(document);
         docRep.save(document);
         ra.addFlashAttribute("message","The file has been upload successfuly ");
-        return "redirect:/course/"+id+"/materials";
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        return "redirect:/admin/" + userId +"/course/"+courseId+"/materials?token=" + token;
     }
-    @PostMapping("/course/{courseId}/remove/{docId}")
+    @PostMapping("/admin/{userId}/course/{courseId}/remove/{docId}")
     public String CourseMaterialDelete(@PathVariable(value = "courseId")long courseId,
+                                       @PathVariable(value = "userId") long userId,
                                        @PathVariable(value = "docId")long docId,Model model)
     {
         Course course=courseRepository.findById(courseId).get();
         Document doc= docRep.findById(docId).get();
         course.removeDocument(doc);
         docRep.deleteById(docId);
-        return "redirect:/course/"+courseId+"/materials";
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        return "redirect:/admin/" + userId +"/course/"+courseId+"/materials?token=" + token;
     }
 
 }

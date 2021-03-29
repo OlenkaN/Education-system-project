@@ -62,18 +62,22 @@ public class AddCourseController
         course.addRole(role);
         courseRepository.save(course);
         userRepository.save(user);
+
         CoursesAndUsers coursesAndUsers= new CoursesAndUsers();
+        CoursesAndRoles coursesAndRoles=new CoursesAndRoles();
+
         coursesAndUsers.setUserId(userId);
         coursesAndUsers.setCourseId(course.getId());;
-        CoursesAndRoles coursesAndRoles=new CoursesAndRoles();
         coursesAndRoles.setCourseId(course.getId());
         coursesAndRoles.setRoleId(role.getId());
         coursesAndUsersRepository.save(coursesAndUsers);
-        coursesAndRoles.addCoursesAndUsers(coursesAndUsers);
         coursesAndRolesRepository.save(coursesAndRoles);
+        coursesAndRoles.addCoursesAndUsers(coursesAndUsers);
         coursesAndUsersRepository.save(coursesAndUsers);
-
+        coursesAndRolesRepository.save(coursesAndRoles);
         String token = jwtProvider.generateToken(user.getEmail(),course.getId());
-        return "redirect:/coursePage/"+course.getId()+"?token="+token;
+        coursesAndUsers.setToken(token);
+        coursesAndUsersRepository.save(coursesAndUsers);
+        return "redirect:/admin/"+userId+"/coursePage/"+course.getId()+"?token="+token;
     }
 }

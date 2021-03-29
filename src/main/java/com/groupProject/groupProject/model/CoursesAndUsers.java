@@ -22,6 +22,9 @@ public class CoursesAndUsers {
     @Column(name = "course_id")
     private Long courseId;
 
+    @Column(name = "token")
+    private String token;
+
     @Column(name = "user_id")
     private Long userId;
 

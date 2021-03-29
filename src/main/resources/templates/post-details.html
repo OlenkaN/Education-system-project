@@ -29,9 +29,9 @@
     <p class="lead" th:text="${el.post}"/>
     <hr class="my-4">
     <p class="lead">
-        <a class="btn btn-secondary" th:href="'/course/'+${courseId}+'/post/'+${postId}+'/edit'" role="button">Edit</a>
+        <a class="btn btn-secondary" th:href="'/admin/'+${userId}+'/course/'+${courseId}+'/post/'+${postId}+'/edit?token='+${token}" role="button">Edit</a>
     </p>
-    <form th:action="'/course/'+${courseId}+'/post/'+${postId}+'/remove/post'" method="post">
+    <form th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/post/'+${postId}+'/remove/post?token='+${token}" method="post">
         <button class="btn btn-warning" type="submit">Delete</button>
     </form>
 </div>
@@ -45,7 +45,7 @@
                 <div>
                     [[${doc.name}]]
                 </div>
-                <form th:action="'/course/'+${courseId}+'/post/'+${postId} +'/remove/doc/'+${doc.id}" method="post">
+                <form th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/post/'+${postId} +'/remove/doc/'+${doc.id}+'?token='+${token}" method="post">
                     <button class="btn btn-secondary"   type="submit">Delete</button>
                 </form>
             </div>
@@ -53,7 +53,7 @@
     </div>
     </div>
 
-<form th:action="'/course/'+${courseId}+'/post/'+${postId} +'/upload/materials'" method="post" enctype="multipart/form-data">
+<form th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/post/'+${postId} +'/upload/materials?token='+${token}" method="post" enctype="multipart/form-data">
     <div class="container-fluid text-center">
     <div class="border rounded m-3 ">
         <h2>Upload Your Files:</h2>
