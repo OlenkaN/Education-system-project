@@ -39,17 +39,19 @@ public class Task {
         documents.add( document );
         document.setTask( this );
     }
+
+
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> tasks = new ArrayList<>();
+    private List<ReadyTask> readyTasks = new ArrayList<>();
 
+    public void removeReadyTask(ReadyTask readyTask) {
+        readyTasks.remove( readyTask );
+        readyTask.setTask( null );
+    }
+    public void addReadyTask(ReadyTask readyTask) {
+        readyTasks.add( readyTask );
+        readyTask.setTask( this );
+    }
 
-    public void removeComment(Comment comment) {
-        tasks.remove( comment );
-        comment.setTask( null );
-    }
-    public void addComment(Comment comment) {
-        tasks.add( comment );
-        comment.setTask( this );
-    }
 
 }

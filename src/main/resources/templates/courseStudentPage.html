@@ -23,8 +23,6 @@
 <div class="jumbotron text-center">
     <h2 th:text="${courseName}"/>
 </div>
-
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Coursebar</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,45 +30,31 @@
     </button>
 
 
-    <div class="collapse navbar-collapse" id="navbarColor02">
+    <div class="collapse navbar-collapse" id="navbarColor03">
         <ul class="navbar-nav mr-auto">
 
+
             <li class="nav-item">
-                <a class="nav-link"  s href="#">Students</a>
+                <a type="button" class="btn btn-outline-secondary" style="color: #f7f7f9" th:href="'/studentMain/'+${userId}+'/studentCourse/'+${courseId}+'/tasksForStudent'">Tasks</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Homeworks</a>
+                <a type="button"class="btn btn-outline-secondary" style="color: #f7f7f9" th:href="'/studentCourse/'+${courseId}+'/materials'" >Materials</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="'/course/'+${courseId}+'/materials'" >Materials</a>
-            </li>
+
         </ul>
 
     </div>
 </nav>
-<div class="container mt-5 mb-5">
-    <h1> Create post</h1>
-    <form th:action="'/course/'+${courseId}" method="post" enctype="multipart/form-data">
-        <input type="text" name="title" placeholder="Enter title" class="form-control"><br>
-        <input type="text" name="announce" placeholder="Enter announce" class="form-control"><br>
-        <textarea name="post" placeholder="Enter post text" class="form-control"></textarea><br>
-        <div class="form-group">
-            <label>File input</label>
-            <input type="file" class="form-control-file" name="exampleInputFile"  aria-describedby="fileHelp">
-            <input type="file" class="form-control-file" name="exampleInputFile1"  aria-describedby="fileHelp">
-            <input type="file" class="form-control-file" name="exampleInputFile2"   aria-describedby="fileHelp">
-        </div>
-        <button type="submit" class="btn btn-secondary">Add post</button>
-    </form>
 
-</div>
+<br>
 
-<div th:each="el :${posts}" class="card text-white bg-dark mb-3"  id="center">
+
+<div th:each="el:${posts}" class="card text-white bg-dark mb-3"  id="center">
     <h1 class="display-3" th:text="${el.title}"/>
     <p class="lead" th:text="${el.announce}"/>
     <hr class="my-4">
     <p class="lead">
-        <a class="btn btn-secondary" th:href="'/post/'+${courseId}+'/'+${el.id}" role="button">Learn more</a>
+        <a class="btn btn-secondary" th:href="'/user/'+${userId}+'/postForStudent/'+${courseId}+'/postId/'+${el.id}" role="button">Learn more</a>
     </p>
 </div>
 

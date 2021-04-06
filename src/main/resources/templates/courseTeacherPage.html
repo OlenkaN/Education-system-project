@@ -15,6 +15,7 @@
             padding: 10px;
         }
     </style>
+
 </head>
 <body>
 <header
@@ -32,17 +33,30 @@
     </button>
 
 
-    <div class="collapse navbar-collapse" id="navbarColor02">
+    <div class="collapse navbar-collapse" id="navbarColor03">
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link"  s href="#">Students</a>
+                <a type="button" class="btn btn-outline-secondary"  style="color: #f7f7f9"  th:href="'/admin/'+${userId}+'/course/'+${courseId}+'/students?token='+${token}">Students</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="'/admin/'+${userId}+'/course/'+${courseId}+'/tasks?token='+${token}">Tasks</a>
+                <a type="button" class="btn btn-outline-secondary" style="color: #f7f7f9" th:href="'/admin/'+${userId}+'/course/'+${courseId}+'/tasks?token='+${token}">Tasks</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="'/admin/'+${userId}+'/course/'+${courseId}+'/materials?token='+${token}" >Materials</a>
+                <a type="button"class="btn btn-outline-secondary" style="color: #f7f7f9" th:href="'/admin/'+${userId}+'/course/'+${courseId}+'/materials?token='+${token}" >Materials</a>
+            </li>
+            <li class="nav-item">
+                <input type="text" style="display: none" th:value="${courseInv}" id="myInput">
+                <button type="button" class="btn btn-outline-secondary" style="color: #f7f7f9"onclick="myFunction()">Copy invitation</button>
+                <script>
+                    function myFunction() {
+                        var copyText = document.getElementById("myInput");
+                        copyText.select();
+                        copyText.setSelectionRange(0, 99999)
+                        navigator.clipboard.writeText(copyText.value);
+                        alert("Copied the text: " + copyText.value);
+                    }
+                </script>
             </li>
         </ul>
 
@@ -65,7 +79,7 @@
 
 </div>
 
-<div th:each="el :${posts}" class="card text-white bg-dark mb-3"  id="center">
+<div th:each="el:${posts}" class="card text-white bg-dark mb-3"  id="center">
     <h1 class="display-3" th:text="${el.title}"/>
     <p class="lead" th:text="${el.announce}"/>
     <hr class="my-4">
@@ -73,9 +87,13 @@
         <a class="btn btn-secondary" th:href="'/admin/'+${userId}+'/post/'+${courseId}+'/'+${el.id}+'?token='+${token}" role="button">Learn more</a>
     </p>
 </div>
+<form th:action="'/admin/'+${userId}+'/course/'+${courseId}+'/delete?token='+${token}" method="post">
+    <button style="margin: auto;width: 1000px; color: #95999c" type="submit" class="btn btn-outline-warning btn-lg btn-block">Delete course</button>
+</form>
 
 <div
         th:insert="footer :: footer">
 </div>
+
 </body>
 </html>

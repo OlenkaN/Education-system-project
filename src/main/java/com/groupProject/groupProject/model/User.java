@@ -84,5 +84,16 @@ public class User {
         comment.setUser( this );
 
     }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReadyTask> readyTasks = new ArrayList<>();
+
+    public void removeReadyTask(ReadyTask readyTask) {
+        readyTasks.remove( readyTask );
+        readyTask.setUser( null );
+    }
+    public void addReadyTask(ReadyTask readyTask) {
+        readyTasks.add( readyTask );
+        readyTask.setUser( this );
+    }
 
 }

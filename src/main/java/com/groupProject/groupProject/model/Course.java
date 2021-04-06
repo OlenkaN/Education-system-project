@@ -21,6 +21,9 @@ public class Course
     @Column(name = "name")
     private String name;
 
+    @Column(name = "invitation")
+    private String invitation;
+
     @ManyToMany(mappedBy = "courses",cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<>();
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

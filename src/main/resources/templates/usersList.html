@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${courseName}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        #center {
+            margin: auto;
+            width: 1136px;
+            padding: 10px;
+        }
+    </style>
+
+</head>
+<body>
+<header
+        th:insert="header :: header">
+</header>
+<div class="jumbotron text-center">
+    <h2 >Course participants</h2>
+</div>
+<table class="table" style=" background-color: #e9ecef">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Surname</th>
+        <th scope="col">Email</th>
+    </tr>
+    </thead>
+
+    <tbody th:each="el :${users}">
+    <tr>
+        <td th:text="${el.name}">
+        <td th:text="${el.surname}">
+        <td th:text="${el.email}">
+    </tr>
+    </tbody>
+
+</table>
+<div
+        th:insert="footer :: footer">
+</div>
+
+</body>
+</html>

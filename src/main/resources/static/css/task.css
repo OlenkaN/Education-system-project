@@ -1,0 +1,11 @@
+.container {
+    width: 500px;
+    clear: both;
+    align-content: center;
+}
+
+.container input {
+    width: 20%;
+    clear: both;
+    align-content: center;
+}

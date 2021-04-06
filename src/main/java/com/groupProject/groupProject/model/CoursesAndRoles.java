@@ -26,13 +26,13 @@ public class CoursesAndRoles {
     private Long roleId;
 
 
-    @OneToOne(
+   /* @OneToOne(
             mappedBy = "coursesAndRoles",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    private CoursesAndUsers coursesAndUsers;
+   private CoursesAndUsers coursesAndUsers;
 
     public void addCoursesAndUsers(CoursesAndUsers coursesAndUsers) {
         coursesAndUsers.setCoursesAndRoles(this);
@@ -44,5 +44,5 @@ public class CoursesAndRoles {
             coursesAndUsers.setCoursesAndRoles(null);
             this.coursesAndUsers = null;
         }
-    }
+    }*/
 }

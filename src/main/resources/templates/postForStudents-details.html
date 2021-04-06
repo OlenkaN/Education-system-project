@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Post details</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.css">
+    <link rel="stylesheet" href="https://bootswatch.com/4/sandstone/bootstrap.css">
+    <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.css">
+    <link rel="stylesheet" href="https://bootswatch.com/_assets/css/custom.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        #center {
+            margin: auto;
+            width: 1136px;
+            padding: 10px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+<header
+        th:insert="header :: header">
+</header>
+<br>
+<div th:each="el:${post}" class="card text-white bg-dark mb-3" id="center">
+    <h1 class="display-3" th:text="${el.title}"/>
+    <p class="lead" th:text="${el.announce}"/>
+    <p class="lead" th:text="${el.post}"/>
+</div>
+
+<div   class="container-fluid text-center">
+    <div class="row border rounded m-3 p-3">
+        <th:block th:each="doc: ${docs}">
+            <div class="col">
+                <div>
+                    <img th:src="@{/css/file2.png}" width="100"/>
+                </div>
+                <div>
+                    [[${doc.name}]]
+                </div>
+
+                <a href = "<c:url value=/UploadFiles/test.txt />" download>Download Me</a>
+            </div>
+        </th:block>
+    </div>
+</div>
+<div
+        th:insert="footer :: footer">
+</div>
+</body>
+</html>

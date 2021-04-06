@@ -18,9 +18,12 @@ public class Comment {
     @GeneratedValue
     private Long id;
     @Column(name = "comment")
-    private String post;
+    private String comment;
     @ManyToOne
     private User user;
     @ManyToOne
     private Task task;
+
+    @ManyToOne
+    private ReadyTask readyTask;
 }

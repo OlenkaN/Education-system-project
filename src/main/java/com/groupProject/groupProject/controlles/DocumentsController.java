@@ -3,7 +3,6 @@ package com.groupProject.groupProject.controlles;
 
 import com.groupProject.groupProject.model.Course;
 import com.groupProject.groupProject.model.Document;
-import com.groupProject.groupProject.model.Post;
 import com.groupProject.groupProject.repo.CourseRepository;
 import com.groupProject.groupProject.repo.CoursesAndUsersRepository;
 import com.groupProject.groupProject.repo.DocumentRepository;
@@ -32,6 +31,7 @@ public class DocumentsController {
     private PostRepository postRepository;
     @Autowired
     private CoursesAndUsersRepository coursesAndUsersRepository;
+    public final static String UPLOAD_FILE_PATH = "D:/Programming/groupProject/UploadFiles/";
 
     @GetMapping("/admin/{userId}/course/{courseId}/materials")
     public String viewMaterialsPage(@PathVariable(value = "courseId")long courseId,
@@ -44,7 +44,7 @@ public class DocumentsController {
         model.addAttribute("courseId",courseId);
         model.addAttribute("userId", userId);
 
-        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
         model.addAttribute("token", token);
 
         return "CourseTeacherMaterials";
@@ -66,7 +66,7 @@ public class DocumentsController {
         course.addDocument(document);
         docRep.save(document);
         ra.addFlashAttribute("message","The file has been upload successfuly ");
-        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
         return "redirect:/admin/" + userId +"/course/"+courseId+"/materials?token=" + token;
     }
     @PostMapping("/admin/{userId}/course/{courseId}/remove/{docId}")
@@ -78,7 +78,7 @@ public class DocumentsController {
         Document doc= docRep.findById(docId).get();
         course.removeDocument(doc);
         docRep.deleteById(docId);
-        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
         return "redirect:/admin/" + userId +"/course/"+courseId+"/materials?token=" + token;
     }
 

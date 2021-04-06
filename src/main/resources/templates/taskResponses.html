@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${taskName}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        #center {
+            margin: auto;
+            width: 1136px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<header
+        th:insert="header :: header">
+</header>
+<div class="jumbotron text-center">
+    <h2 th:text="${taskName}"/>
+</div>
+
+
+<div th:each="el :${usersTasks}" class="card text-white bg-dark mb-3" id="center">
+    <h5 style="font-size: 3rem;
+    font-weight: 300;
+    line-height: 1.2" th:text="${el.user.surname}"/>
+    <h6 style="font-size: 2rem;
+    font-weight: 300;
+    line-height: 1.2"th:text="${el.user.name}"/>
+    <hr class="my-4">
+        <div class="row">
+            <div class="col-lg-7">
+                <p class="lead">
+                    <a class="btn btn-secondary" th:href="'/admin/'+${userId}+'/course/'+${courseId} +'/task/'+${taskId}+'/responses/user/'+${el.user.id}+'?token='+${token}" role="button">Estimate</a>
+                </p>
+            </div>
+        </div>
+
+</div>
+
+
+<div
+        th:insert="footer :: footer">
+</div>
+
+
+</body>
+</html>

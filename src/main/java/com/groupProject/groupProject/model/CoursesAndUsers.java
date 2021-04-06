@@ -28,9 +28,7 @@ public class CoursesAndUsers {
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-
+    @OneToOne
     @JoinColumn(name = "courses_roles_id")
     private CoursesAndRoles coursesAndRoles;
 }

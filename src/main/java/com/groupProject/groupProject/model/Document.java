@@ -31,5 +31,7 @@ public class Document {
     @ManyToOne
     private User user;
     @ManyToOne
+    private ReadyTask readyTask;
+    @ManyToOne
     private Task task;
 }

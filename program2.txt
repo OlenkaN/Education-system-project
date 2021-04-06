@@ -1,0 +1,27 @@
+package com.epam.rd.java.basic.practice4;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Part1 {
+    static final String REGEX_WORD = "[A-ZА-ЯЇІЄЭЁЩa-zа-яёэіїєщ]{4,}";
+    public static void main(String[] args) {
+
+         convert("part1.txt");
+
+    }
+    public static void convert(String fileName){
+        String str = getInput(fileName);
+        Pattern pattern = Pattern.compile(REGEX_WORD);
+        Matcher matcher = pattern.matcher(str);
+        while (matcher.find()){
+            str = str.replace(matcher.group() , matcher.group().substring(2, matcher.group().length()));
+        }
+
+            System.out.println(str);
+    }
+
+}

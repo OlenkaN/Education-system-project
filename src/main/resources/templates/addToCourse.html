@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel = "stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header
+        th:insert="header :: header">
+</header>
+
+<div class="container mt-5 mb-5">
+    <h1>Join the course </h1>
+    <form th:action="${join}" method="post">
+        <input type = "text" name = "code" placeholder="Write the code of the course" class="form-control"><br>
+        <button type="submit" class = "btn btn-success">Join</button>
+    </form>
+</div>
+<div
+        th:insert="footer :: footer">
+</div>
+</body>
+</html>

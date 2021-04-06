@@ -51,7 +51,7 @@ public class PostsController {
         Iterable<Document> docs = post1.getDocuments();
         model.addAttribute("docs", docs);
 
-        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
         model.addAttribute("token", token);
 
         model.addAttribute("courseId", courseId);
@@ -66,7 +66,7 @@ public class PostsController {
                            @PathVariable(value = "userId") long userId,
                            @PathVariable(value = "courseId") long courseId, Model model) {
 
-        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
         model.addAttribute("token", token);
 
         if (!postRepository.existsById(postId)) {
@@ -92,7 +92,7 @@ public class PostsController {
                              @RequestParam String title,
                              @RequestParam String announce, @RequestParam String post, Model model) {
 
-        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
 
         if (!postRepository.existsById(postId)) {
             return "redirect:/admin/" + userId + "/coursePage/" + courseId+"?token=" + token;
@@ -146,7 +146,7 @@ public class PostsController {
             uploadFile(exampleInputFile2, p, course);
         }
 
-        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
         return "redirect:/admin/" + userId + "/coursePage/" + course.getId()+"?token=" + token;
     }
 
@@ -162,7 +162,7 @@ public class PostsController {
         if (!multipartFile.isEmpty()) {
             uploadFile(multipartFile, post, course);
         }
-        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
         return "redirect:/admin/" + userId + "/post/" + courseId + "/" + postId+"?token=" + token;
     }
 
@@ -178,7 +178,7 @@ public class PostsController {
         post.removeDocument(doc);
         course.removeDocument(doc);
         docRep.deleteById(docId);
-        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
         return "redirect:/admin/" + userId + "/post/" + courseId + "/" + postId+"?token=" + token;
 
     }
@@ -196,8 +196,28 @@ public class PostsController {
         Course course = courseRepository.findById(courseId).get();
         course.removePost(post);
         postRepository.delete(post);
-        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId, userId).getToken();
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
 
         return "redirect:/admin/" + userId + "/coursePage/" + courseId+"?token=" + token;
+    }
+    @GetMapping("/user/{userId}/postForStudent/{courseId}/postId/{postId}")
+    public String PostForStudentDetails(@PathVariable(value = "postId") long postId,
+                                        @PathVariable(value = "userId") long userId,
+                                        @PathVariable(value = "courseId") long courseId, Model model) {
+        if (!postRepository.existsById(postId)) {
+            return "redirect:/user/"+userId+"courseStudentPage/" + courseId;
+        }
+        Optional<Post> post = postRepository.findById(postId);
+        ArrayList<Post> res = new ArrayList<>();
+        post.ifPresent(res::add);
+        Post post1 = postRepository.findById(postId).get();
+        Iterable<Document> docs = post1.getDocuments();
+        model.addAttribute("uploadFilePath", DocumentsController.UPLOAD_FILE_PATH);
+        model.addAttribute("docs", docs);
+        model.addAttribute("courseId", courseId);
+        model.addAttribute("post", res);
+        model.addAttribute("postId", postId);
+        model.addAttribute("userId",userId);
+        return "postForStudents-details";
     }
 }

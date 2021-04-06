@@ -31,6 +31,8 @@ public class UserMainController {
         model.addAttribute("greeting", "Hi, " + user.getName() + ", welcome back!");
         model.addAttribute("title", "SmartCourse");
         model.addAttribute("create", userId + "/createCourse");
+        model.addAttribute("join", userId + "/joinCourse");
+        model.addAttribute("courses", userId + "/myCourses");
 
         if (toDoItemRepository.existsByUser(user)) {
             List<ToDoItem> doneToDoItems = toDoItemRepository.findAllByUser(user)

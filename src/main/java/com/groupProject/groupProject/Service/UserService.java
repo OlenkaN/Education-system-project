@@ -54,7 +54,7 @@ public class UserService {
     }
     public Role findByUserIdAndCourseId(Long courseId,Long userId)
     {
-        CoursesAndUsers coursesAndUsers= coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndAndUserId(courseId,userId);
+        CoursesAndUsers coursesAndUsers= coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId,userId);
         Optional<CoursesAndRoles> coursesAndRoles=coursesAndRolesRepository.findById(coursesAndUsers.getCoursesAndRoles().getId());
         ArrayList<CoursesAndRoles> res = new ArrayList<>();
         coursesAndRoles.ifPresent(res::add);
