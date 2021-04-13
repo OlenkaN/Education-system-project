@@ -61,7 +61,7 @@ public class TeacherPageController {
 
 
     @GetMapping("/admin/{userId}/course/{courseId}/students")
-    public String viewTasksPage(@PathVariable(value = "courseId") long courseId,
+    public String viewUsersList(@PathVariable(value = "courseId") long courseId,
                                 @PathVariable(value = "userId") long userId,
                                 Model model) {
         Course course = courseRepository.findById(courseId).get();
@@ -78,6 +78,28 @@ public class TeacherPageController {
         model.addAttribute("userId", userId);
         return "usersList";
     }
+    @GetMapping("/admin/{userId}/course/{courseId}/grades")
+    public String viewUsersGrades(@PathVariable(value = "courseId") long courseId,
+                                @PathVariable(value = "userId") long userId,
+                                Model model) {
+        System.out.println("In grades show controller");
+        Course course = courseRepository.findById(courseId).get();
+
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
+        model.addAttribute("token", token);
+
+        model.addAttribute("courseName", course.getName());
+        model.addAttribute("courseId", course.getId());
+
+        Iterable<Task> tasks=course.getTasks();
+        model.addAttribute("tasks",tasks);
+        Iterable<User> users = course.getUsers();
+        model.addAttribute("users", users);
+
+        model.addAttribute("userId", userId);
+        return "courseTeacherGrades";
+    }
+
 
     @PostMapping("/admin/{userId}/course/{courseId}/delete")
     public String deleteCourse(@PathVariable(value = "courseId") long courseId,

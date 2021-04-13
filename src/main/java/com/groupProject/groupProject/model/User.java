@@ -95,5 +95,15 @@ public class User {
         readyTasks.add( readyTask );
         readyTask.setUser( this );
     }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Grade> grades = new ArrayList<>();
+    public void removeGrade(Grade grade) {
+        grades.remove( grade );
+        grade.setUser( null );
+    }
+    public void addGrade(Grade grade) {
+        grades.add( grade );
+        grade.setUser( this );
+    }
 
 }

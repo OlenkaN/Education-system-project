@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${courseName}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        #center {
+            margin: auto;
+            width: 1136px;
+            padding: 10px;
+        }
+    </style>
+
+</head>
+<body>
+<header
+        th:insert="header :: header">
+</header>
+<div class="jumbotron text-center">
+    <h2 >Course participants</h2>
+</div>
+<table class="table" style=" background-color: #e9ecef">
+
+    <thead>
+    <tr>
+        <th scope="col">Task name</th>
+        <th scope="col">Grade</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each="readyTask:${readyTasks}">
+        <td th:text="${readyTask.task.title}"/>
+        <td th:text="${readyTask.grade.value}"/>
+    </tr>
+    </tbody>
+
+</table>
+<div
+        th:insert="footer :: footer">
+</div>
+
+</body>
+</html>

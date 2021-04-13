@@ -46,6 +46,9 @@
                 <a type="button"class="btn btn-outline-secondary" style="color: #f7f7f9" th:href="'/admin/'+${userId}+'/course/'+${courseId}+'/materials?token='+${token}" >Materials</a>
             </li>
             <li class="nav-item">
+                <a type="button"class="btn btn-outline-secondary" style="color: #f7f7f9" th:href="'/admin/'+${userId}+'/course/'+${courseId}+'/grades?token='+${token}" >Grades</a>
+            </li>
+            <li class="nav-item">
                 <input type="text" style="display: none" th:value="${courseInv}" id="myInput">
                 <button type="button" class="btn btn-outline-secondary" style="color: #f7f7f9"onclick="myFunction()">Copy invitation</button>
                 <script>

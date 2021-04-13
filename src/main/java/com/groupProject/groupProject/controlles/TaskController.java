@@ -9,13 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -44,6 +43,8 @@ public class TaskController {
 
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private GradeRepository gradeRepository;
 
 
     @GetMapping("/admin/{userId}/course/{courseId}/tasks")
@@ -118,11 +119,43 @@ public class TaskController {
         String normalizedCode2 = normalizer.getNormalizedCode(program2);
         Plagiator plag = new Plagiator();
         System.out.println(plag.AveragePlagiatTest(normalizedCode1, normalizedCode2));
-        System.out.println(plag.longestCommonSubstringTest(normalizedCode1 , normalizedCode2));
-        System.out.println(plag.WShinglingTest(normalizedCode1 , normalizedCode2));
-        ra.addFlashAttribute("message", "The result is: "+(plag.AveragePlagiatTest(normalizedCode1, normalizedCode2)));
+        System.out.println(plag.longestCommonSubstringTest(normalizedCode1, normalizedCode2));
+        System.out.println(plag.WShinglingTest(normalizedCode1, normalizedCode2));
+        ra.addFlashAttribute("message", "The result is: " + (double)Math.round((plag.AveragePlagiatTest(normalizedCode1, normalizedCode2)) * 1000d) / 1000d);
 
         return "redirect:/admin/" + userId + "/course/" + courseId + "/task/" + taskId + "/responses/user/" + studentId + "?token=" + token;
+    }
+
+    @PostMapping("/admin/{userId}/course/{courseId}/task/{taskId}/student/{studentId}/grade")
+    public String setGrade(@PathVariable(value = "courseId") long courseId,
+                           @PathVariable(value = "userId") long userId,
+                           @PathVariable(value = "studentId") long studentId,
+                           @PathVariable(value = "taskId") long taskId,
+                           @Valid @ModelAttribute("grade") GradeRequest grade,
+                           BindingResult bindingResult, Model model, RedirectAttributes attr) {
+        Task task = taskRepository.findById(taskId).get();
+        User studentUser = userRepository.findById(studentId).get();
+        ReadyTask readyTask=readyTaskRepository.findByTaskAndUser(task,studentUser);
+        String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
+        if (bindingResult.hasErrors()) {
+            System.out.println("has error...");
+            attr.addFlashAttribute("org.springframework.validation.BindingResult.grade", bindingResult);
+            attr.addFlashAttribute("grade", grade);
+            return "redirect:/admin/" + userId + "/course/" + courseId + "/task/" + taskId + "/responses/user/" + studentId + "?token=" + token;
+        }
+        Grade grade1 = gradeRepository.findByTaskAndUser(task, studentUser);
+        if (grade1 == null) {
+            grade1 = new Grade();
+        }
+        grade1.setValue(grade.getValue());
+        gradeRepository.save(grade1);
+        task.addGrade(grade1);
+        studentUser.addGrade(grade1);
+        gradeRepository.save(grade1);
+        readyTask.setGrade(grade1);
+        readyTaskRepository.save(readyTask);
+        return "redirect:/admin/" + userId + "/course/" + courseId + "/task/" + taskId + "/responses/user/" + studentId + "?token=" + token;
+
     }
 
 
@@ -212,7 +245,12 @@ public class TaskController {
         }
         Task task = taskRepository.findById(taskId).get();
         User studentUser = userRepository.findById(studentId).get();
-
+        Grade grade1 = gradeRepository.findByTaskAndUser(task, studentUser);
+        if (grade1 == null) {
+            model.addAttribute("taskGrade", null);
+        } else {
+            model.addAttribute("taskGrade", grade1.getValue());
+        }
         ReadyTask readyTask = readyTaskRepository.findByTaskAndUser(task, studentUser);
         Iterable<Document> docs = readyTask.getDocuments();
         model.addAttribute("docs", docs);
@@ -229,6 +267,9 @@ public class TaskController {
 
         model.addAttribute("token", token);
         model.addAttribute("userId", userId);
+        if(!model.containsAttribute("grade")) {
+            model.addAttribute("grade", new GradeRequest() );
+        }
 
         return "taskEstimateUser";
     }
@@ -340,6 +381,7 @@ public class TaskController {
         Course course = courseRepository.findById(courseId).get();
         Task task = taskRepository.findById(taskId).get();
         model.addAttribute("taskName", task.getTitle());
+        model.addAttribute("taskInfo", task.getTask());
         ReadyTask readyTask = readyTaskRepository.findByTaskAndUser(task, user);
         if (readyTask != null) {
             Iterable<Comment> comments = readyTask.getComments();

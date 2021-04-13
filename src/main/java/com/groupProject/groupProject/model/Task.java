@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -38,6 +37,16 @@ public class Task {
     public void addDocument(Document document) {
         documents.add( document );
         document.setTask( this );
+    }
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Grade> grades = new ArrayList<>();
+    public void removeGrade(Grade grade) {
+        grades.remove( grade );
+        grade.setTask( null );
+    }
+    public void addGrade(Grade grade) {
+        grades.add( grade );
+        grade.setTask( this );
     }
 
 

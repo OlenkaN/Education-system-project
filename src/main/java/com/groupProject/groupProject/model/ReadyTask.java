@@ -29,6 +29,9 @@ public class ReadyTask {
 
     @ManyToOne
     private User user;
+    @OneToOne
+    @JoinColumn(name = "grade_Id")
+    private Grade grade;
 
     @OneToMany(mappedBy = "readyTask", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Document> documents = new ArrayList<>();

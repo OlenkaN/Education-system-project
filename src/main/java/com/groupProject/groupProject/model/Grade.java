@@ -10,21 +10,22 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "roles_courses")
+@Table(name = "grades")
 @NoArgsConstructor
 @AllArgsConstructor
-public class CoursesAndRoles {
-
+public class Grade {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(name = "course_id")
-    private Long courseId;
+    @Column(name = "value")
+    private double value;
 
-    @Column(name = "role_id")
-    private Long roleId;
+    @ManyToOne
+    private Task task;
 
+    @ManyToOne
+    private User user;
 
 
 }

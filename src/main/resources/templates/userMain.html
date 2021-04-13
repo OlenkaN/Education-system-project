@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${title}"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel = "stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
@@ -32,7 +32,7 @@
     <section class="jumbotron text-center">
         <div class="container">
             <h1></h1>
-            <p th:text="${greeting}" />
+            <p th:text="${greeting}"/>
             <p>
                 <a href="/pomodoro" class="btn btn-primary my-2">Pomodoro</a>
                 <a th:href="${courses}" class="btn btn-secondary my-2">MyCourses</a>
@@ -41,28 +41,47 @@
     </section>
     <div class="bg-dark shadow-sm align-items-center">
         <div class="container align-items-center">
-                <strong class="text-white">Check your toDoList:</strong>
-                <div th:each="notDoneToDoItemElement : ${notDoneToDoItems}" class="form-check-text-align-center">
-                    <li><a align-items-center>
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <h class="form-check-label text-white " for="flexCheckDefault"
-                           th:text="${notDoneToDoItemElement.title}"
-                        />
-                    </a></li>
-
-                </div>
-
-                <div th:each="doneToDoItemElement : ${doneToDoItems}" class="form-check-text-align-center">
-                    <li><a align-items-center>
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                    <h class="form-check-label text-white" for="flexCheckChecked"
-                           th:text="${doneToDoItemElement.title}"
+            <strong class="text-white">Check your toDoList:</strong>
+            <div th:each="notDoneToDoItemElement : ${notDoneToDoItems}" class="form-check-text-align-center">
+                <li><a align-items-center>
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <h class="form-check-label text-white " for="flexCheckDefault"
+                       th:text="${notDoneToDoItemElement.title}"
                     />
-                    </a></li>
-                </div>
+                </a></li>
+
+            </div>
+
+            <div th:each="doneToDoItemElement : ${doneToDoItems}" class="form-check-text-align-center">
+                <li><a align-items-center>
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <h1 class="form-check-label text-white" for="flexCheckChecked"
+                       th:text="${doneToDoItemElement.title}"
+                    />
+                </a></li>
+
+            </div>
+            <div  class="form-check-text-align-center">
+                <li><a align-items-center>
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked>
+                    <h6 class="form-check-label text-white" for="flexCheckChecked">Be kitten</h6>
+
+                </a></li>
+                <li><a align-items-center>
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked>
+                    <h6 class="form-check-label text-white" for="flexCheckChecked">Be smart kitten</h6>
+                </a>
+                </li>
+                <li><a align-items-center>
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3">
+                    <h6 class="form-check-label text-white " for="flexCheckDefault">Do everything in time</h6>
+                </a>
+                </li>
+                <br>
+            </div>
+
         </div>
     </div>
-
 
 
 </main>

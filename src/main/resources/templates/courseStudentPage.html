@@ -38,7 +38,10 @@
                 <a type="button" class="btn btn-outline-secondary" style="color: #f7f7f9" th:href="'/studentMain/'+${userId}+'/studentCourse/'+${courseId}+'/tasksForStudent'">Tasks</a>
             </li>
             <li class="nav-item">
-                <a type="button"class="btn btn-outline-secondary" style="color: #f7f7f9" th:href="'/studentCourse/'+${courseId}+'/materials'" >Materials</a>
+                <a type="button"class="btn btn-outline-secondary" style="color: #f7f7f9" th:href="'/user/'+${userId}+'/course/'+${courseId}+'/materials'" >Materials</a>
+            </li>
+            <li class="nav-item">
+                <a type="button"class="btn btn-outline-secondary" style="color: #f7f7f9" th:href="'/user/'+${userId}+'/course/'+${courseId}+'/grades'" >Grades</a>
             </li>
 
         </ul>

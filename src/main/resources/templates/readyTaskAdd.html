@@ -33,11 +33,14 @@
     <h2 th:text="${courseName}"/>
 </div>
 
-<div class="card text-white bg-dark mb-3">
+<div class="card text-white bg-dark mb-3" style="margin: auto;
+            width: 1136px;
+            padding: 10px;">
     <h4 style="text-align: center;
     margin-bottom: 3rem;
     border-radius: .3rem;
      font-size: 3rem" th:text="${taskName}"/>
+    <p class="lead" th:text="${taskInfo}"/>
 </div>
 
 <div class="container-fluid text-center">
@@ -50,9 +53,8 @@
                 <div>
                     [[${doc.name}]]
                 </div>
-                <form action="#" method="post">
-                    <button class="btn btn-secondary" type="submit">Download</button>
-                </form>
+                <a class="nav-link" th:href="'/download?documentId='+${doc.id}">Download Me</a>
+
             </div>
         </th:block>
     </div>
@@ -116,9 +118,7 @@
                         <h4>Leave a comment</h4>
                         <label id="comment">Message</label>
                         <textarea name="comment" id="" msg cols="30" rows="5" class="form-control"
-                                  style="background-color: white;">
-
-                        </textarea>
+                                  style="background-color: white;"></textarea>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-secondary" id="post">Post Comment</button>
