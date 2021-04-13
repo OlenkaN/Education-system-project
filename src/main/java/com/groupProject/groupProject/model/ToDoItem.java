@@ -20,10 +20,15 @@ public class ToDoItem {
     @Column(name = "title")
     private String title;
 
+
     @Column(name = "done")
     private Boolean done;
 
     @ManyToOne
     private User user;
+
+    @OneToOne
+    @JoinColumn(name = "task_id")
+    private Task task;
 
 }

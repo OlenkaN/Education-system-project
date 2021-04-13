@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -45,6 +46,8 @@ public class TaskController {
     private CommentRepository commentRepository;
     @Autowired
     private GradeRepository gradeRepository;
+    @Autowired
+    private ToDoItemRepository toDoItemRepository;
 
 
     @GetMapping("/admin/{userId}/course/{courseId}/tasks")
@@ -76,7 +79,7 @@ public class TaskController {
                           @RequestParam MultipartFile exampleInputFile2,
                           Model model) throws IOException, ParseException {
         Course course = courseRepository.findById(courseId).get();
-
+        List<User> users = course.getUsers();
         Task t = new Task();
         t.setTitle(title);
         t.setTask(task);
@@ -84,6 +87,17 @@ public class TaskController {
         t.setTime(date);
         taskRepository.save(t);
         course.addTask(t);
+        for (User user : users) {
+            if (user.getId() != userId) {
+                ToDoItem toDoItem = new ToDoItem();
+                toDoItem.setTitle(title+" from "+course.getName());
+                toDoItem.setDone(false);
+                toDoItem.setUser(user);
+                toDoItem.setTask(t);
+                toDoItemRepository.save(toDoItem);
+            }
+
+        }
 
         if (!exampleInputFile.isEmpty()) {
             uploadFile(exampleInputFile, t, course);
@@ -121,7 +135,7 @@ public class TaskController {
         System.out.println(plag.AveragePlagiatTest(normalizedCode1, normalizedCode2));
         System.out.println(plag.longestCommonSubstringTest(normalizedCode1, normalizedCode2));
         System.out.println(plag.WShinglingTest(normalizedCode1, normalizedCode2));
-        ra.addFlashAttribute("message", "The result is: " + (double)Math.round((plag.AveragePlagiatTest(normalizedCode1, normalizedCode2)) * 1000d) / 1000d);
+        ra.addFlashAttribute("message", "The result is: " + (double) Math.round((plag.AveragePlagiatTest(normalizedCode1, normalizedCode2)) * 1000d) / 1000d);
 
         return "redirect:/admin/" + userId + "/course/" + courseId + "/task/" + taskId + "/responses/user/" + studentId + "?token=" + token;
     }
@@ -135,7 +149,7 @@ public class TaskController {
                            BindingResult bindingResult, Model model, RedirectAttributes attr) {
         Task task = taskRepository.findById(taskId).get();
         User studentUser = userRepository.findById(studentId).get();
-        ReadyTask readyTask=readyTaskRepository.findByTaskAndUser(task,studentUser);
+        ReadyTask readyTask = readyTaskRepository.findByTaskAndUser(task, studentUser);
         String token = coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(courseId, userId).getToken();
         if (bindingResult.hasErrors()) {
             System.out.println("has error...");
@@ -169,6 +183,13 @@ public class TaskController {
         for (Document doc : docs) {
             docRep.deleteById(doc.getId());
         }
+        List<ToDoItem> toDoItems=toDoItemRepository.findByTask(task);
+        for(ToDoItem toDoItem:toDoItems)
+        {
+            toDoItemRepository.delete(toDoItem);
+        }
+
+
         Course course = courseRepository.findById(courseId).get();
         course.removeTask(task);
         taskRepository.delete(task);
@@ -267,8 +288,8 @@ public class TaskController {
 
         model.addAttribute("token", token);
         model.addAttribute("userId", userId);
-        if(!model.containsAttribute("grade")) {
-            model.addAttribute("grade", new GradeRequest() );
+        if (!model.containsAttribute("grade")) {
+            model.addAttribute("grade", new GradeRequest());
         }
 
         return "taskEstimateUser";
@@ -424,6 +445,10 @@ public class TaskController {
         ReadyTask readyTask = readyTaskRepository.findByTaskAndUser(task, user);
         if (readyTask == null) {
             readyTask = new ReadyTask();
+            ToDoItem toDoItem = toDoItemRepository.findByUserAndTask(user, task);
+            toDoItem.setDone(true);
+            toDoItemRepository.save(toDoItem);
+
         } else {
             try {
                 Iterable<Document> docs = readyTask.getDocuments();

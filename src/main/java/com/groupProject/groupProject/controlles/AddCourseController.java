@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 
 @Controller
@@ -28,6 +30,8 @@ public class AddCourseController {
     private CoursesAndRolesRepository coursesAndRolesRepository;
     @Autowired
     private JwtProvider jwtProvider;
+     @Autowired
+    private ToDoItemRepository toDoItemRepository;
 
 
     private String generateUniqueIdString() {
@@ -72,6 +76,7 @@ public class AddCourseController {
             )
     {
         Course course =courseRepository.findCourseByInvitation(code);
+
         if(course==null)
         {
             model.addAttribute("message","There no course with such invitation code");
@@ -85,6 +90,17 @@ public class AddCourseController {
         Role role = roleRepository.findByName("ROLE_USER");
         User user = userRepository.findById(userId).get();
         String token=madeDependencies(user,course,role,false);
+        List<Task> tasks=course.getTasks();
+        for(Task task :tasks)
+        {
+            ToDoItem toDoItem = new ToDoItem();
+            toDoItem.setTitle(task.getTitle()+" from "+course.getName());
+            toDoItem.setDone(false);
+            toDoItem.setUser(user);
+            toDoItem.setTask(task);
+            toDoItemRepository.save(toDoItem);
+
+        }
         return "redirect:/user/"+userId+"/courseStudentPage/"+course.getId();
     }
 
@@ -126,13 +142,11 @@ public class AddCourseController {
         String token = jwtProvider.generateToken(user.getEmail(), course.getId());
         coursesAndUsers.setToken(token);
 
-        //coursesAndUsersRepository.save(coursesAndUsers);
+
         coursesAndRolesRepository.save(coursesAndRoles);
-        //CoursesAndUsers r = coursesAndUsers;
-        //coursesAndRoles.addCoursesAndUsers(coursesAndUsers);
         coursesAndUsers.setCoursesAndRoles(coursesAndRoles);
         coursesAndUsersRepository.save(coursesAndUsers);
-       // coursesAndRolesRepository.save(coursesAndRoles);
+
 
 
         CoursesAndUsers TEST= coursesAndUsersRepository.findCoursesAndUsersByCourseIdAndUserId(course.getId(), user.getId());

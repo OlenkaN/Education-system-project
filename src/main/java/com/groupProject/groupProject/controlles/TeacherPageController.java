@@ -39,6 +39,9 @@ public class TeacherPageController {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private  ToDoItemRepository toDoItemRepository;
+
     @GetMapping("/admin/{userId}/coursePage/{courseId}")
     public String TeacherContr(@PathVariable(value = "courseId") long courseId,
                                @PathVariable(value = "userId") long userId,
@@ -116,6 +119,11 @@ public class TeacherPageController {
                 Iterable<Document> d = t.getDocuments();
                 for (Document doc : d) {
                     docRep.deleteById(doc.getId());
+                }
+                List<ToDoItem> toDoItems=toDoItemRepository.findByTask(t);
+                for(ToDoItem toDoItem:toDoItems)
+                {
+                    toDoItemRepository.deleteById(toDoItem.getId());
                 }
 
                 taskRepository.delete(t);

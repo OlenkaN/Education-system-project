@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>327eae0a-f8c5-4255-ba50-f074032f43f2</OriginalElement>
+  <nodes>
+    <node x="0.0" y="793.0">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.roles</node>
+    <node x="203.0" y="793.0">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.hibernate_sequence</node>
+    <node x="161.59621848739494" y="476.0">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.documents</node>
+    <node x="771.4043067226891" y="0.0">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users</node>
+    <node x="549.2720588235293" y="39.0">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.role_table</node>
+    <node x="597.0" y="274.5">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.user_course_role</node>
+    <node x="551.5962184873948" y="541.0">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.comments</node>
+    <node x="260.0" y="248.0">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.tasks</node>
+    <node x="1056.7909663865546" y="567.5">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users_to_do_items</node>
+    <node x="50.0" y="248.0">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.posts</node>
+    <node x="429.0" y="287.5">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users_courses</node>
+    <node x="226.84180672268906" y="39.0">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.courses</node>
+    <node x="857.7909663865546" y="567.5">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.user_to_do_items</node>
+    <node x="985.750525210084" y="261.0">327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.to_do_items</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.posts" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.courses">
+      <point x="0.0" y="-84.0" />
+      <point x="145.0" y="228.0" />
+      <point x="272.14180672268907" y="228.0" />
+      <point x="-30.19999999999999" y="45.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users_to_do_items" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.to_do_items">
+      <point x="-44.75" y="-44.5" />
+      <point x="1101.5409663865546" y="456.0" />
+      <point x="1097.5005252100839" y="456.0" />
+      <point x="37.249999999999886" y="71.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.user_course_role" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users">
+      <point x="56.33333333333337" y="-57.5" />
+      <point x="737.8333333333333" y="218.0" />
+      <point x="810.6185924369747" y="218.0" />
+      <point x="-52.285714285714334" y="84.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users_courses" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users">
+      <point x="37.0" y="-44.5" />
+      <point x="540.0" y="208.0" />
+      <point x="784.4757352941176" y="208.0" />
+      <point x="-78.42857142857144" y="84.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.documents" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users">
+      <point x="73.875" y="-136.0" />
+      <point x="333.97121848739494" y="446.0" />
+      <point x="776.5" y="446.0" />
+      <point x="776.5" y="228.0" />
+      <point x="836.761449579832" y="228.0" />
+      <point x="-26.14285714285711" y="84.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.user_course_role" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.role_table">
+      <point x="0.0" y="-57.5" />
+      <point x="681.5" y="188.0" />
+      <point x="624.7720588235293" y="188.0" />
+      <point x="0.0" y="45.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.documents" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.posts">
+      <point x="-24.625" y="-136.0" />
+      <point x="235.47121848739494" y="446.0" />
+      <point x="145.0" y="446.0" />
+      <point x="0.0" y="84.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users_to_do_items" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users">
+      <point x="44.75" y="-44.5" />
+      <point x="1191.0409663865546" y="456.0" />
+      <point x="1150.25" y="456.0" />
+      <point x="1150.25" y="218.0" />
+      <point x="941.3328781512605" y="218.0" />
+      <point x="78.42857142857144" y="84.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.comments" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.tasks">
+      <point x="-33.5" y="-71.0" />
+      <point x="585.0962184873948" y="436.0" />
+      <point x="371.75" y="436.0" />
+      <point x="37.25" y="84.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.user_to_do_items" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users">
+      <point x="-44.75" y="-44.5" />
+      <point x="903.5" y="228.0" />
+      <point x="889.0471638655463" y="228.0" />
+      <point x="26.142857142857224" y="84.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.user_course_role" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.courses">
+      <point x="-56.33333333333337" y="-57.5" />
+      <point x="625.1666666666665" y="198.0" />
+      <point x="362.7418067226891" y="198.0" />
+      <point x="60.400000000000034" y="45.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.documents" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.tasks">
+      <point x="24.625" y="-136.0" />
+      <point x="284.72121848739494" y="456.0" />
+      <point x="297.25" y="456.0" />
+      <point x="-37.25" y="84.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users_courses" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.courses">
+      <point x="-37.0" y="-44.5" />
+      <point x="466.0" y="218.0" />
+      <point x="332.54180672268905" y="218.0" />
+      <point x="30.19999999999999" y="45.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.comments" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users">
+      <point x="33.5" y="-71.0" />
+      <point x="652.0962184873948" y="456.0" />
+      <point x="861.375525210084" y="456.0" />
+      <point x="861.375525210084" y="228.0" />
+      <point x="862.9043067226891" y="228.0" />
+      <point x="0.0" y="84.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.user_to_do_items" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.to_do_items">
+      <point x="44.75" y="-44.5" />
+      <point x="992.0409663865546" y="456.0" />
+      <point x="1023.000525210084" y="456.0" />
+      <point x="-37.25" y="71.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.to_do_items" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.users">
+      <point x="-1.1368683772161603E-13" y="-71.0" />
+      <point x="1060.2505252100839" y="228.0" />
+      <point x="915.1900210084034" y="228.0" />
+      <point x="52.285714285714334" y="84.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.documents" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.courses">
+      <point x="-73.875" y="-136.0" />
+      <point x="186.22121848739494" y="456.0" />
+      <point x="39.5" y="456.0" />
+      <point x="39.5" y="218.0" />
+      <point x="241.94180672268908" y="218.0" />
+      <point x="-60.39999999999998" y="45.0" />
+    </edge>
+    <edge source="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.tasks" target="327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.courses">
+      <point x="0.0" y="-84.0" />
+      <point x="334.5" y="228.0" />
+      <point x="302.34180672268906" y="228.0" />
+      <point x="0.0" y="45.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6098726114649682" x="1141.8798955613577" y="441.5" />
+  <SelectedNodes>
+    <node>327eae0a-f8c5-4255-ba50-f074032f43f2.TABLE:mydatabase.roles</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Key columns</Category>
+    <Category>Columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
